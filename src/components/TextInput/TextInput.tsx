@@ -8,7 +8,7 @@ export interface RootProps {
 
 function Root({ children }: RootProps) {
   return (
-    <div className="flex items-center gap-3 py-4 px-3  rounded bg-gray-800 w-full focus-within:ring-2 ring-cyan-300 ">
+    <div className="flex items-center gap-3 py-3 px-4  rounded bg-gray-800 w-full focus-within:ring-2 ring-cyan-300 ">
       {children}
     </div>
   );
