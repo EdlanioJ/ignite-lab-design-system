@@ -9,9 +9,11 @@ export default {
   decorators: [
     (Story) => {
       return (
-        <div className="flex items-center gap-3">
-          {Story()}
-          <Text size="sm">Lembrar de mim por 30 dias</Text>
+        <div className="flex items-center gap-2">
+          {Story({ args: { id: 'remember', 'aria-label': 'remember me' } })}
+          <label htmlFor="remember">
+            <Text size="sm">Lembrar de mim por 30 dias</Text>
+          </label>
         </div>
       );
     },
