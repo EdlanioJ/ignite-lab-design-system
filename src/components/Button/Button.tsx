@@ -4,7 +4,7 @@ import { Slot } from '@radix-ui/react-slot';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
-  asChild: boolean;
+  asChild?: boolean;
 }
 
 export function Button({ asChild, children, className, ...rest }: ButtonProps) {
