@@ -6,23 +6,21 @@ import { Heading } from '../../components/Heading';
 import { Logo } from '../../components/Logo/Logo';
 import { Text } from '../../components/Text';
 import { TextInput } from '../../components/TextInput';
+import { useAuth } from '../../hooks/auth';
 
 export function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
+  const { handleSignIn, user, error, status } = useAuth();
 
   function toggleRemember() {
     setRemember((val) => !val);
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log({
-      email,
-      password,
-      remember,
-    });
+    await handleSignIn({ email, password, remember });
   }
 
   return (
@@ -35,9 +33,15 @@ export function SignIn() {
         <Text className="text-gray-400">Faça login e comece a usar</Text>
       </header>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={onSubmit}
         className="flex flex-col gap-4 items-stretch w-full max-w-[400px]"
       >
+        {status === 'success' && (
+          <Heading size="sm">
+            Usuário {user?.username} logado com sucesso
+          </Heading>
+        )}
+        {status === 'error' && <Heading size="sm">{error}</Heading>}
         <label htmlFor="email" className="flex flex-col gap-3">
           <Text className="font-semibold">Endereço de e-mail</Text>
           <TextInput.Root>
@@ -50,7 +54,7 @@ export function SignIn() {
               value={email}
               required
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Type your e-mail address"
+              placeholder="Digite seu e-mail"
             />
           </TextInput.Root>
         </label>
@@ -80,14 +84,15 @@ export function SignIn() {
             checked={remember}
             onClick={toggleRemember}
             aria-label="remember me"
-            required
           />
           <Text size="sm" className="text-gray-200">
             Lembrar de mim por 30 dias
           </Text>
         </label>
 
-        <Button type="submit">Entrar na plataforma</Button>
+        <Button type="submit" disabled={status === 'loading'}>
+          Entrar na plataforma
+        </Button>
       </form>
       <footer className="flex flex-col items-center gap-4 mt-8">
         <Text asChild size="sm">
